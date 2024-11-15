@@ -68,6 +68,14 @@ type Server struct {
 }
 
 func (server *Server) Go() {
+	for i := 0; i < server.MsgHandlerGoroutineNum; i++ {
+		server.MsgHandlerExit = append(server.MsgHandlerExit, make(chan int))
+	}
+
+	for i := 0; i < server.ScheduledTaskGoroutineNum; i++ {
+		server.ScheduledTaskExit = append(server.ScheduledTaskExit, make(chan int))
+	}
+
 	var wg sync.WaitGroup
 	for i := 0; i < server.MsgHandlerGoroutineNum; i++ {
 		number := i

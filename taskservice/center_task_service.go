@@ -52,14 +52,6 @@ func (ts *TaskService) NewServer(serverName string, handler MessageHandler, sche
 		server.MsgHandlerGoroutineNum = 0
 	}
 
-	for i := 0; i < server.MsgHandlerGoroutineNum; i++ {
-		server.MsgHandlerExit = append(server.MsgHandlerExit, make(chan int))
-	}
-
-	for i := 0; i < server.ScheduledTaskGoroutineNum; i++ {
-		server.ScheduledTaskExit = append(server.ScheduledTaskExit, make(chan int))
-	}
-
 	server.State = Stopped
 	ts.Servers.Store(serverName, server)
 	return server, nil
